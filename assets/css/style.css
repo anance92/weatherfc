@@ -1,0 +1,78 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: rgb(236, 228, 228);
+    --secondary: #b2e0f0;
+    --tertiary: rgb(192, 246, 253);
+    --grey: #333;
+    /* font-size: 82.5%; */
+}
+
+#weatherContainer {
+    display: flex;
+    margin: auto;
+    background-color: white;
+    padding: 1em;
+    border: solid rgb(236, 228, 228);
+}
+
+#forecastContainer {
+    display: flex;
+    margin: auto;
+    background-color: white;
+    border: solid rgb(236, 228, 228);
+}
+
+#searchHistory {
+    text-align: left;
+    padding: .5em;
+    border: solid rgb(236, 228, 228);
+    border-top: none;
+}
+
+.city {
+    text-align: left;
+    padding: .5em;
+    border: solid rgb(236, 228, 228);
+    
+
+}
+
+h1 {
+    
+    background-image: linear-gradient(#e4e9ee, #ffffff, #e4e9ee);
+    text-align: center;
+    margin: 1em 0 1em 0;
+    padding: .5em;
+    border: 1em;
+    
+}
+
+.row {
+    padding: 2em;
+    
+}
+
+
+
+.low {
+    background-image: linear-gradient(to right top, #008b89, #418b87, #7ea09e, #8de4a3, #03e762);
+}
+
+.moderate {
+    background-image: repeating-linear-gradient( #eceee5, #c5ec6a, #edf06b, #e4d615, #c0bd04);
+}
+
+.high {
+    background-image: linear-gradient(to right top, #ce7b44, #ce947c, #ebcbb8, #e7bd87, #d6ab36);
+}
+
+.severe {
+    background-image: linear-gradient(to right top, #a70606, #f16e6e, #f79595, #f089b1, #fc0000);
+}
+
+.extreme {
+    background-image: linear-gradient(to right top, #5900ff, #cb88e6, #e900e9, #ac71f0, #d726ee);
+}
