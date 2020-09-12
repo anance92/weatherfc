@@ -28,34 +28,38 @@
 #searchHistory {
     text-align: left;
     padding: .5em;
-    border: solid rgb(236, 228, 228);
-    border-top: none;
 }
 
 .city {
+    cursor: pointer;
     text-align: left;
     padding: .5em;
     border: solid rgb(236, 228, 228);
-    
+}
 
+.city:hover {
+    border: solid grey;
+}
+
+.fcdiv {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: pink;
+    padding: .5em;
+    margin: auto;
 }
 
 h1 {
-    
     background-image: linear-gradient(#e4e9ee, #ffffff, #e4e9ee);
     text-align: center;
     margin: 1em 0 1em 0;
     padding: .5em;
     border: 1em;
-    
 }
 
 .row {
     padding: 2em;
-    
 }
-
-
 
 .low {
     background-image: linear-gradient(to right top, #008b89, #418b87, #7ea09e, #8de4a3, #03e762);

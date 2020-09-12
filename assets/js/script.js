@@ -1,36 +1,93 @@
+
+
+function initializePage(){
+    var getCity = localStorage.getItem("city");
+    console.log(getCity);
+
+    if (getCity != null) {
+        var history = JSON.parse(getCity);
+        
+        for (var i = 0; i < history.length; i++) {
+
+            var lastCity = document.createElement("h5");
+            var lastCityContainer = document.createElement("div");
+            
+            lastCityContainer.classList.add("list-group-item");
+            lastCityContainer.classList.add("list-group-item-action");
+            lastCity.innerHTML = history[i];
+            lastCityContainer.appendChild(lastCity);
+            var searchHistoryContainer = document.querySelector("#searchHistory");
+            searchHistoryContainer.appendChild(lastCityContainer);
+        }
+    }
+    /*lastCityContainer.addEventListener("click", function() {
+        console.log(city);
+        console.log("I was clicked");
+        showWeather(city);
+    });*/
+}
+initializePage();
+
 function addSearchHistory(city) {
-    localStorage.setItem(city, city);
+    var getCity = localStorage.getItem("city");
+    var cityArray = [];
+    
+    // is getCity empty, make new array of city
+    if (getCity == null) {
+        cityArray = [city];
+    } else {
+        cityArray = JSON.parse(getCity);
+        cityArray.push(city);
+    }
+    
+    // if it's not empty
+    var citystring = JSON.stringify(cityArray);
+    
+    localStorage.setItem("city", citystring);
 
     var lastCity = document.createElement("h5");
     var lastCityContainer = document.createElement("div");
-    lastCityContainer.classList.add("city");
+    lastCityContainer.classList.add("list-group-item");
+    lastCityContainer.classList.add("list-group-item-action");
     lastCity.innerHTML = city;
     lastCityContainer.appendChild(lastCity);
     var searchHistoryContainer = document.querySelector("#searchHistory");
     searchHistoryContainer.appendChild(lastCityContainer);
+
+    lastCityContainer.addEventListener("click", function() {
+        console.log(city);
+        console.log("I was clicked");
+        showWeather(city);
+    });
 }
 
-
-function myFunction() {
+function handleSearchEvent(){
     var city = document.querySelector("#searchTerm").value;
     addSearchHistory(city);
     
+    showWeather(city);
+}
 
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=` + city + `&appid=58aa8245b304cb67e8aaf0db4a500248
+function showWeather(city) {
+    var FCcontainer = document.querySelector("#forecastContainer");
+    FCcontainer.innerHTML = "";
+
+    fetch(`http://api.openweathermap.org/data/2.5/weather?q=` + city + `&units=imperial&appid=58aa8245b304cb67e8aaf0db4a500248
      `)
     .then(function(response) {
         return response.json();
     })
     .then(function(response) {
         
+        var cityName = document.createElement("h3");
+        cityName.innerHTML = response.name;
+
         var currentDate = document.createElement("li");
         currentDate.innerHTML = "Today: " + moment().format("dddd, MMMM Do YYYY");
 
-        var cityName = document.createElement("li");
-        cityName.innerHTML = "City: " + response.name;
-
         var temp = document.createElement("li");
-        var tempF = Math.floor((response.main.temp - 273.15)* (9/5) + 32);
+        var tempF = response.main.temp;
+        //var tempF = Math.floor((response.main.temp - 273.15)* (9/5) + 32);
         temp.innerHTML = "Temperature: " + tempF + " *F";
 
         var humidity = document.createElement("li");
@@ -48,8 +105,8 @@ function myFunction() {
         var icon = response.weather[0].icon;
         
         var weather = document.createElement("ul");
-        weather.appendChild(currentDate)
         weather.appendChild(cityName);
+        weather.appendChild(currentDate)
         weather.appendChild(temp);
         weather.appendChild(humidity);
         weather.appendChild(windsp);
@@ -100,33 +157,37 @@ function myFunction() {
         }); */
    
         // fetch to get forecast
-   
+        var cnt = 5;
         fetch(`http://api.openweathermap.org/data/2.5/forecast/?q=` + city  
-        + `&appid=58aa8245b304cb67e8aaf0db4a500248`)
+        + `&cnt=` + cnt + `&units=imperial&appid=58aa8245b304cb67e8aaf0db4a500248`)
         .then(function(response) {
             return response.json();
         })
         .then(function(response) {
-            var weatherDescriptionFC = document.createElement("li");
-            
-            weatherDescriptionFC.innerHTML = "Weather will be: " + response.list[0].weather[0].description;
-            var tempFC = document.createElement("li");
-            var temperatureFC = Math.floor((response.list[0].main.temp - 273.15)* (9/5) + 32);
-            tempFC.innerHTML = "Temperature: " + temperatureFC + " *F";
-
-            var FCweather = document.createElement("ul");
-            FCweather.appendChild(weatherDescriptionFC);
-            FCweather.appendChild(tempFC);
+            for (var count=0; count<=4; count++) {
+                var weatherDescriptionFC = document.createElement("li");
+                //console.log(response.list[count].weather[0].description);
+                weatherDescriptionFC.innerHTML = "Weather will be: " + response.list[count].weather[0].description;
+                var tempFC = document.createElement("li");
+                var temperatureFC = response.list[count].main.temp;
+                //var temperatureFC = Math.floor((response.list[count].main.temp - 273.15)* (9/5) + 32);
+                tempFC.innerHTML = "Temperature: " + temperatureFC + " *F";
+                //console.log(temperatureFC);
+                var FCweather = document.createElement("ul");
+                FCweather.appendChild(weatherDescriptionFC);
+                FCweather.appendChild(tempFC);
                 
-            var fcdesc = document.createElement("p");
-            fcdesc.innerHTML = "Below is the forecast for the next day: ";
-            var FCcontainer = document.querySelector("#forecastContainer");
-            FCcontainer.innerHTML = "";
-            FCcontainer.appendChild(fcdesc);
-            FCcontainer.appendChild(FCweather);
+                var fcdesc = document.createElement("div");
+                fcdesc.classList.add("fcdiv");
+                //
+                fcdesc.innerHTML = "Below is the forecast for the next day: ";
+                fcdesc.appendChild(FCweather);
+                
+                //FCcontainer.innerHTML = "";
+                FCcontainer.appendChild(fcdesc);
+                
+            }
         }); 
-
     })
-
-    
 }
+
