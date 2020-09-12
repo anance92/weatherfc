@@ -18,12 +18,19 @@ function initializePage(){
             lastCityContainer.appendChild(lastCity);
             var searchHistoryContainer = document.querySelector("#searchHistory");
             searchHistoryContainer.appendChild(lastCityContainer);
+            lastCityContainer.addEventListener("click", function() {
+                console.log(this.textContent);
+                console.log("I was clicked");
+                
+                showWeather(this.textContent);
+            });
         }
     }
     /*lastCityContainer.addEventListener("click", function() {
-        console.log(city);
+        console.log(history[i]);
         console.log("I was clicked");
-        showWeather(city);
+        
+        showWeather();
     });*/
 }
 initializePage();
