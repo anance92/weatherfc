@@ -85,6 +85,10 @@ function showWeather(city) {
         var windsp = document.createElement("p");
         windsp.innerHTML = "Wind Speed: " + response.wind.speed + " m/s";
         
+        var uvIndex = document.createElement("p");
+        
+        var lat = response.coord.lat;
+        var lon = response.coord.lon;
         var weather = document.createElement("ul");
         weather.appendChild(cityName);
         weather.appendChild(currentDate)
@@ -98,11 +102,7 @@ function showWeather(city) {
         container.appendChild(weather);
         
         // fetch to get uv index value
-        var uvIndex = document.createElement("p");
-        
-        var lat = response.coord.lat;
-        var lon = response.coord.lon;
-
+    
         fetch(`https://api.openweathermap.org/data/2.5/uvi?lat=` + lat + `&lon=` + lon 
         + `&appid=58aa8245b304cb67e8aaf0db4a500248`)
         .then(function(response) {
