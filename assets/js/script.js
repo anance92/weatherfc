@@ -85,15 +85,6 @@ function showWeather(city) {
         var windsp = document.createElement("p");
         windsp.innerHTML = "Wind Speed: " + response.wind.speed + " m/s";
         
-        var uvIndex = document.createElement("p");
-        
-        
-        var lat = response.coord.lat;
-        var lon = response.coord.lon;
-        
-        
-        var icon = response.weather[0].icon;
-        
         var weather = document.createElement("ul");
         weather.appendChild(cityName);
         weather.appendChild(currentDate)
@@ -107,6 +98,11 @@ function showWeather(city) {
         container.appendChild(weather);
         
         // fetch to get uv index value
+        var uvIndex = document.createElement("p");
+        
+        var lat = response.coord.lat;
+        var lon = response.coord.lon;
+
         fetch(`https://api.openweathermap.org/data/2.5/uvi?lat=` + lat + `&lon=` + lon 
         + `&appid=58aa8245b304cb67e8aaf0db4a500248`)
         .then(function(response) {
@@ -130,7 +126,9 @@ function showWeather(city) {
             container.appendChild(weather);
         });
 
-        // fetch to get weather icon 
+        // fetch to get weather icon
+        var icon = response.weather[0].icon;
+        
         fetch(`https://openweathermap.org/img/wn/` + icon + `@2x.png`)
         .then(function(response) {
             return response;
@@ -144,7 +142,6 @@ function showWeather(city) {
         }); 
    
         // fetch to get forecast
-        
         var cnt = 5;
 
         fetch(`https://api.openweathermap.org/data/2.5/forecast/?q=` + city  
@@ -154,17 +151,25 @@ function showWeather(city) {
         })
         .then(function(response) {
             for (var count=0; count<=4; count++) {
+
+                console.log(response);
                 var weatherDescriptionFC = document.createElement("li");
-                //console.log(response.list[count].weather[0].description);
+                var humidityFC = document.createElement("li");
+                var humFC = response.list[count].main.humidity;
+
+                humidityFC.innerHTML = "Humidity: " + humFC + "%";
+
                 weatherDescriptionFC.innerHTML = "Expect " + response.list[count].weather[0].description;
                 var tempFC = document.createElement("li");
                 var temperatureFC = response.list[count].main.temp;
-                //var temperatureFC = Math.floor((response.list[count].main.temp - 273.15)* (9/5) + 32);
+                
                 tempFC.innerHTML = "Temp: " + temperatureFC + " *F";
                 //console.log(temperatureFC);
                 var FCweather = document.createElement("ul");
+                
                 FCweather.appendChild(weatherDescriptionFC);
                 FCweather.appendChild(tempFC);
+                FCweather.appendChild(humidityFC);
                 
                 var fcdesc = document.createElement("div");
                 fcdesc.classList.add("fcdiv");
@@ -172,10 +177,20 @@ function showWeather(city) {
                 fcdesc.innerHTML = moment().add(days,'d').format("dddd, MMMM Do YYYY");
                 fcdesc.appendChild(FCweather);
                 
+                /*fetch(`https://openweathermap.org/img/wn/` + icon + `@2x.png`)
+                .then(function(response) {
+                    return response;
+                })
+                .then(function(response) {
+                    var iconli = document.createElement("img");
+                    iconli.src = response.url;
+                    FCweather.appendChild(iconli);
+                    var container = document.querySelector("#weatherContainer");
+                    fcdesc.appendChild(FCweather);
+                }); */
+
                 //FCcontainer.innerHTML = "";
                 FCcontainer.appendChild(fcdesc);
-
-                
             }
         }); 
     })
