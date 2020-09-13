@@ -91,8 +91,8 @@ function showWeather(city) {
         var lat = response.coord.lat;
         var lon = response.coord.lon;
         
-        //var iconli = document.createElement("p");
-        //var icon = response.weather[0].icon;
+        
+        var icon = response.weather[0].icon;
         
         var weather = document.createElement("ul");
         weather.appendChild(cityName);
@@ -128,23 +128,20 @@ function showWeather(city) {
             weather.appendChild(uvIndex);
             var container = document.querySelector("#weatherContainer");
             container.appendChild(weather);
-        
         });
 
         // fetch to get weather icon 
-        /*fetch(`http://openweathermap.org/img/wn/` + icon + `@2x.png`)
+        fetch(`https://openweathermap.org/img/wn/` + icon + `@2x.png`)
         .then(function(response) {
-            console.log(response);
-            return response.json();
+            return response;
         })
         .then(function(response) {
-            
-            iconli.innerHTML = "Weather Icon: " + response;
+            var iconli = document.createElement("img");
+            iconli.src = response.url;
             weather.appendChild(iconli);
             var container = document.querySelector("#weatherContainer");
             container.appendChild(weather);
-
-        }); */
+        }); 
    
         // fetch to get forecast
         
