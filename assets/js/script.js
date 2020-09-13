@@ -164,12 +164,17 @@ function showWeather(city) {
                 var temperatureFC = response.list[count].main.temp;
                 
                 tempFC.innerHTML = "Temp: " + temperatureFC + " *F";
-                //console.log(temperatureFC);
                 var FCweather = document.createElement("ul");
                 
+                var iconli = document.createElement("img");
+                iconli.src = `https://openweathermap.org/img/wn/` + response.list[count].weather[0].icon + `@2x.png`;
+                
+                
+
                 FCweather.appendChild(weatherDescriptionFC);
                 FCweather.appendChild(tempFC);
                 FCweather.appendChild(humidityFC);
+                FCweather.appendChild(iconli);
                 
                 var fcdesc = document.createElement("div");
                 fcdesc.classList.add("fcdiv");
@@ -177,19 +182,6 @@ function showWeather(city) {
                 fcdesc.innerHTML = moment().add(days,'d').format("dddd, MMMM Do YYYY");
                 fcdesc.appendChild(FCweather);
                 
-                /*fetch(`https://openweathermap.org/img/wn/` + icon + `@2x.png`)
-                .then(function(response) {
-                    return response;
-                })
-                .then(function(response) {
-                    var iconli = document.createElement("img");
-                    iconli.src = response.url;
-                    FCweather.appendChild(iconli);
-                    var container = document.querySelector("#weatherContainer");
-                    fcdesc.appendChild(FCweather);
-                }); */
-
-                //FCcontainer.innerHTML = "";
                 FCcontainer.appendChild(fcdesc);
             }
         }); 
