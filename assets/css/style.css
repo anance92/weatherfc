@@ -10,19 +10,22 @@
     /* font-size: 82.5%; */
 }
 
-#weatherContainer {
+ #weatherContainer {
     display: flex;
     margin: auto;
     background-color: white;
     padding: 1em;
-    border: solid rgb(236, 228, 228);
-}
+    /* border: solid rgb(236, 228, 228);*/
+} 
 
 #forecastContainer {
     display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
     margin: auto;
     background-color: white;
     border: solid rgb(236, 228, 228);
+    box-sizing: border-box;
 }
 
 #searchHistory {
@@ -30,7 +33,7 @@
     padding: .5em;
 }
 
-.city {
+/* .city {
     cursor: pointer;
     text-align: left;
     padding: .5em;
@@ -39,17 +42,18 @@
 
 .city:hover {
     border: solid grey;
-}
+} */
 
 .fcdiv {
-    display: flex;
-    flex-wrap: wrap;
-    background-color: pink;
+    background-image: linear-gradient(#e4e9ee, #ffffff, #e4e9ee);
     padding: .5em;
     margin: auto;
+    margin-top: 10px;
+    height: 150px;
+    width: 200px;
 }
 
-h1 {
+h1, h3 {
     background-image: linear-gradient(#e4e9ee, #ffffff, #e4e9ee);
     text-align: center;
     margin: 1em 0 1em 0;
@@ -57,26 +61,37 @@ h1 {
     border: 1em;
 }
 
+
 .row {
     padding: 2em;
 }
 
 .low {
     background-image: linear-gradient(to right top, #008b89, #418b87, #7ea09e, #8de4a3, #03e762);
+    width: 40%;
+    
 }
 
 .moderate {
     background-image: repeating-linear-gradient( #eceee5, #c5ec6a, #edf06b, #e4d615, #c0bd04);
+    width: 40%;
+    
 }
 
 .high {
     background-image: linear-gradient(to right top, #ce7b44, #ce947c, #ebcbb8, #e7bd87, #d6ab36);
+    width: 40%;
+    
 }
 
 .severe {
     background-image: linear-gradient(to right top, #a70606, #f16e6e, #f79595, #f089b1, #fc0000);
+    width: 40%;
+   
 }
 
 .extreme {
     background-image: linear-gradient(to right top, #5900ff, #cb88e6, #e900e9, #ac71f0, #d726ee);
+    width: 40%;
+    
 }

@@ -1,5 +1,3 @@
-
-
 function initializePage(){
     var getCity = localStorage.getItem("city");
     console.log(getCity);
@@ -8,38 +6,36 @@ function initializePage(){
         var history = JSON.parse(getCity);
         
         for (var i = 0; i < history.length; i++) {
-
-            var lastCity = document.createElement("h5");
-            var lastCityContainer = document.createElement("div");
-            
-            lastCityContainer.classList.add("list-group-item");
-            lastCityContainer.classList.add("list-group-item-action");
-            lastCity.innerHTML = history[i];
-            lastCityContainer.appendChild(lastCity);
-            var searchHistoryContainer = document.querySelector("#searchHistory");
-            searchHistoryContainer.appendChild(lastCityContainer);
-            lastCityContainer.addEventListener("click", function() {
-                console.log(this.textContent);
-                console.log("I was clicked");
-                
-                showWeather(this.textContent);
-            });
+            var searchedCity = history[i];
+            addSearchHistoryItem(searchedCity);
         }
     }
-    /*lastCityContainer.addEventListener("click", function() {
-        console.log(history[i]);
-        console.log("I was clicked");
-        
-        showWeather();
-    });*/
 }
 initializePage();
+
+function addSearchHistoryItem(city) {
+    
+    var lastCity = document.createElement("h5");
+    var lastCityContainer = document.createElement("div");
+    lastCity.innerHTML = city;
+    lastCityContainer.classList.add("list-group-item");
+    lastCityContainer.classList.add("list-group-item-action");
+    
+    lastCityContainer.appendChild(lastCity);
+    var searchHistoryContainer = document.querySelector("#searchHistory");
+    searchHistoryContainer.appendChild(lastCityContainer);
+    lastCityContainer.addEventListener("click", function() {
+        //console.log(this.textContent);
+        //console.log("I was clicked");
+        showWeather(this.textContent);
+    });
+}
 
 function addSearchHistory(city) {
     var getCity = localStorage.getItem("city");
     var cityArray = [];
     
-    // is getCity empty, make new array of city
+    // if getCity is empty, make new array of city
     if (getCity == null) {
         cityArray = [city];
     } else {
@@ -52,20 +48,7 @@ function addSearchHistory(city) {
     
     localStorage.setItem("city", citystring);
 
-    var lastCity = document.createElement("h5");
-    var lastCityContainer = document.createElement("div");
-    lastCityContainer.classList.add("list-group-item");
-    lastCityContainer.classList.add("list-group-item-action");
-    lastCity.innerHTML = city;
-    lastCityContainer.appendChild(lastCity);
-    var searchHistoryContainer = document.querySelector("#searchHistory");
-    searchHistoryContainer.appendChild(lastCityContainer);
-
-    lastCityContainer.addEventListener("click", function() {
-        console.log(city);
-        console.log("I was clicked");
-        showWeather(city);
-    });
+    addSearchHistoryItem(city);
 }
 
 function handleSearchEvent(){
@@ -79,7 +62,7 @@ function showWeather(city) {
     var FCcontainer = document.querySelector("#forecastContainer");
     FCcontainer.innerHTML = "";
 
-    fetch(`http://api.openweathermap.org/data/2.5/weather?q=` + city + `&units=imperial&appid=58aa8245b304cb67e8aaf0db4a500248
+    fetch(`https://api.openweathermap.org/data/2.5/weather?q=` + city + `&units=imperial&appid=58aa8245b304cb67e8aaf0db4a500248
      `)
     .then(function(response) {
         return response.json();
@@ -89,27 +72,27 @@ function showWeather(city) {
         var cityName = document.createElement("h3");
         cityName.innerHTML = response.name;
 
-        var currentDate = document.createElement("li");
-        currentDate.innerHTML = "Today: " + moment().format("dddd, MMMM Do YYYY");
+        var currentDate = document.createElement("h5");
+        currentDate.innerHTML = moment().format("dddd, MMMM Do YYYY");
 
-        var temp = document.createElement("li");
+        var temp = document.createElement("p");
         var tempF = response.main.temp;
-        //var tempF = Math.floor((response.main.temp - 273.15)* (9/5) + 32);
         temp.innerHTML = "Temperature: " + tempF + " *F";
 
-        var humidity = document.createElement("li");
+        var humidity = document.createElement("p");
         humidity.innerHTML = "Humidity: " + response.main.humidity + "%";
 
-        var windsp = document.createElement("li");
+        var windsp = document.createElement("p");
         windsp.innerHTML = "Wind Speed: " + response.wind.speed + " m/s";
         
-        var uvIndex = document.createElement("li");
+        var uvIndex = document.createElement("p");
+        
         
         var lat = response.coord.lat;
         var lon = response.coord.lon;
         
-        var iconli = document.createElement("li");
-        var icon = response.weather[0].icon;
+        //var iconli = document.createElement("p");
+        //var icon = response.weather[0].icon;
         
         var weather = document.createElement("ul");
         weather.appendChild(cityName);
@@ -124,7 +107,7 @@ function showWeather(city) {
         container.appendChild(weather);
         
         // fetch to get uv index value
-        fetch(`http://api.openweathermap.org/data/2.5/uvi?lat=` + lat + `&lon=` + lon 
+        fetch(`https://api.openweathermap.org/data/2.5/uvi?lat=` + lat + `&lon=` + lon 
         + `&appid=58aa8245b304cb67e8aaf0db4a500248`)
         .then(function(response) {
             return response.json();
@@ -164,8 +147,10 @@ function showWeather(city) {
         }); */
    
         // fetch to get forecast
+        
         var cnt = 5;
-        fetch(`http://api.openweathermap.org/data/2.5/forecast/?q=` + city  
+
+        fetch(`https://api.openweathermap.org/data/2.5/forecast/?q=` + city  
         + `&cnt=` + cnt + `&units=imperial&appid=58aa8245b304cb67e8aaf0db4a500248`)
         .then(function(response) {
             return response.json();
@@ -174,11 +159,11 @@ function showWeather(city) {
             for (var count=0; count<=4; count++) {
                 var weatherDescriptionFC = document.createElement("li");
                 //console.log(response.list[count].weather[0].description);
-                weatherDescriptionFC.innerHTML = "Weather will be: " + response.list[count].weather[0].description;
+                weatherDescriptionFC.innerHTML = "Expect " + response.list[count].weather[0].description;
                 var tempFC = document.createElement("li");
                 var temperatureFC = response.list[count].main.temp;
                 //var temperatureFC = Math.floor((response.list[count].main.temp - 273.15)* (9/5) + 32);
-                tempFC.innerHTML = "Temperature: " + temperatureFC + " *F";
+                tempFC.innerHTML = "Temp: " + temperatureFC + " *F";
                 //console.log(temperatureFC);
                 var FCweather = document.createElement("ul");
                 FCweather.appendChild(weatherDescriptionFC);
@@ -186,15 +171,15 @@ function showWeather(city) {
                 
                 var fcdesc = document.createElement("div");
                 fcdesc.classList.add("fcdiv");
-                //
-                fcdesc.innerHTML = "Below is the forecast for the next day: ";
+                var days = count +1;
+                fcdesc.innerHTML = moment().add(days,'d').format("dddd, MMMM Do YYYY");
                 fcdesc.appendChild(FCweather);
                 
                 //FCcontainer.innerHTML = "";
                 FCcontainer.appendChild(fcdesc);
+
                 
             }
         }); 
     })
 }
-
