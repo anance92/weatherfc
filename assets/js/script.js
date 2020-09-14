@@ -1,3 +1,4 @@
+// What to show on page upon reloading
 function initializePage(){
     var getCity = localStorage.getItem("city");
     console.log(getCity);
@@ -13,20 +14,17 @@ function initializePage(){
 }
 initializePage();
 
+// Create a history of cities searched
 function addSearchHistoryItem(city) {
-    
     var lastCity = document.createElement("h5");
     var lastCityContainer = document.createElement("div");
     lastCity.innerHTML = city;
     lastCityContainer.classList.add("list-group-item");
     lastCityContainer.classList.add("list-group-item-action");
-    
     lastCityContainer.appendChild(lastCity);
     var searchHistoryContainer = document.querySelector("#searchHistory");
     searchHistoryContainer.appendChild(lastCityContainer);
     lastCityContainer.addEventListener("click", function() {
-        //console.log(this.textContent);
-        //console.log("I was clicked");
         showWeather(this.textContent);
     });
 }
@@ -51,6 +49,7 @@ function addSearchHistory(city) {
     addSearchHistoryItem(city);
 }
 
+// function created to handle search event, whether searched or clicked
 function handleSearchEvent(){
     var city = document.querySelector("#searchTerm").value;
     addSearchHistory(city);
